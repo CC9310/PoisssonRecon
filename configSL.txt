@@ -1,0 +1,6 @@
+input_dir=/data5/txc/Data/Private/Cab/mesh/
+output_dir=/data5/txc/Data/Private/Cab/mesh/mesh/
+depth=14
+color=32.0
+num_threads=30
+trim=5

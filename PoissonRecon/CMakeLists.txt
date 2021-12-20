@@ -1,21 +1,8 @@
-cmake_minimum_required(VERSION 3.10)
-project(3DMapSL)
-set(CMAKE_CXX_STANDARD 11)
-# set(CMAKE_CXX_FLAGS "-g -O3") 
-add_definitions("-fopenmp")
-IF (CMAKE_BUILD_TYPE MATCHES "Debug")
-        MESSAGE(STATUS "CMAKE_BUILD_TYPE = Debug")
-        set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -g -O0")
-ELSEIF (CMAKE_BUILD_TYPE MATCHES "Release")
-        MESSAGE(STATUS "CMAKE_BUILD_TYPE = Release")
-        set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -g -O3")
-ELSE()
-        set(CMAKE_BUILD_TYPE "Release")
-        MESSAGE(STATUS "Set defalult CMAKE_BUILD_TYPE = Release")
-        set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -g -O3")
-ENDIF()
-add_definitions(-w)
-add_subdirectory(PoissonRecon)
+# if(NOT IS_MSVC)
+#     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -funroll-loops -ffast-math -std=c++11")
+# endif()
+
+# add_definitions("-DRELEASE")
 FIND_PACKAGE( OpenMP REQUIRED)
 if(OPENMP_FOUND)
 message("OPENMP FOUND")
@@ -23,18 +10,6 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
-link_directories(${Boost_LIBRARY_DIRS})
-link_libraries( boost_iostreams
-                boost_program_options
-                boost_filesystem
-                boost_system
-                boost_serialization
-                boost_regex)
-# include_directories(/usr/local/cuda-10.0/include/
-#                 ./)
-# link_directories(/usr/local/cuda-10.0/lib64)
 
-# aux_source_directory(./PoissonRecon/ ALGO_SRCS)
-# add_library(PoissonRecon "$ALGO_SRCS")
-add_executable(3DMapSL main.cpp)
-target_link_libraries (3DMapSL poisson_recon)
+aux_source_directory(.  ALGO_SRCS)
+add_library(poisson_recon "${ALGO_SRCS}")
